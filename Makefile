@@ -6,7 +6,7 @@ cargobuild:
 copy:
 	mkdir -p docker/src
 	rsync -av aquatic/aquatic* aquatic/plot_pareto aquatic/Cargo* aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src
-	rsync -av -f"- */" -f"+ *" aquatic/target/debug/*  docker
+	rsync -av aquatic/target/debug/aquatic_udp aquatic/target/debug/aquatic_ws docker
   
 dockerbuild:
 	cd docker && docker build -t rektide/aquatic_ws -t rektide/aquatic .
