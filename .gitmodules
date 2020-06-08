@@ -1,3 +1,6 @@
 [submodule "aquatic"]
 	path = aquatic
 	url = https://github.com/greatest-ape/aquatic
+[submodule "websocat"]
+	path = websocat
+	url = https://github.com/vi/websocat
