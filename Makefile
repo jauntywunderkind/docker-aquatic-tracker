@@ -11,6 +11,10 @@ copy:
 dockerbuild:
 	cd docker && docker build -t rektide/aquatic_ws -t rektide/aquatic .
 
+dockerpush:
+	cd docker && docker push rektide/aquatic
+	cd docker && docker push rektide/aquatic_ws
+
 all: cargobuild copy dockerbuild
 
   
