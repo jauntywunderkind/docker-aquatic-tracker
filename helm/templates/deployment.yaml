@@ -30,7 +30,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          command: "./aquatic_ws"
+          command:
+            - "./aquatic_ws"
           args:
             - "-c"
             - "etc/config_ws"
