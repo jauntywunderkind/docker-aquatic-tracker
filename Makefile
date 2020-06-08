@@ -2,10 +2,13 @@
 
 cargobuild:
 	cd aquatic && cargo build
+
+copy:
+	rsync -av aquatic/aquatic* docker/
   
 dockerbuild:
-	docker build -t rektide/aquatic_ws .
+	cd docker && docker build -t rektide/aquatic_ws .
 
-all: cargobuild dockerbuild
+all: cargobuild copy dockerbuild
 
   
