@@ -36,25 +36,28 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+configmap:
+  annotations: {}
+
 service:
   type: ClusterIP
   port: 3000
 
 ingress:
   enabled: true
-  annotations: # {}
-    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
-    external-dns.alpha.kubernetes.io/hostname: aquatic.yoyodyne.net
+  annotations: #{}
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: aquatic.sandybase.voodoowarez.com
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: traefik
+    #kubernetes.io/tls-acme: "true"
   hosts:
-    #- host: chart-example.local
-    - host: aquatic.yoyodyne.net
+    - host: aquatic.sandybase.voodoowarez.com
       paths: ["/"]
   tls: # []
-    - secretName: aquatic-cert
-      hosts:
-        - aquatic.yoyodyne.net
+    - hosts:
+        - aquatic.sandybase.voodoowarez.com
+      #secretName: aquatic-cert-secret
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -74,7 +77,7 @@ resources: {}
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 1
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
