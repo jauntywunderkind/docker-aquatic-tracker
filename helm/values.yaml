@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: rektide/aquatic-tracker
+  repository: rektide/aquatic
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
