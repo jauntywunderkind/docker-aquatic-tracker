@@ -13,11 +13,11 @@ configbuild:
 	cd docker && ./aquatic_udp -p > config_udp
 
 dockerbuild:
-	cd docker && docker build -t rektide/aquatic_ws -t rektide/aquatic .
+	cd docker && docker build -t rektide/aquatic_ws:latest -t rektide/aquatic:latest .
 
 dockerpush:
-	cd docker && docker push rektide/aquatic
-	cd docker && docker push rektide/aquatic_ws
+	cd docker && docker push rektide/aquatic:latest
+	cd docker && docker push rektide/aquatic_ws:latest
 
 all: cargobuild copy configbuild dockerbuild
 
