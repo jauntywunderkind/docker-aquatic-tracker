@@ -1,4 +1,4 @@
 FROM debian:buster-slim
 WORKDIR /opt/websocket
-COPY websocat .
+COPY . ./
 CMD websocat

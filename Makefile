@@ -18,10 +18,10 @@ aquatic-docker:
 	cd docker && docker build -t rektide/aquatic_ws:latest -t rektide/aquatic:latest .
 
 aquatic-docker-push:
-	cd docker && docker push rektide/aquatic:latest
-	cd docker && docker push rektide/aquatic_ws:latest
+	docker push rektide/aquatic:latest
+	docker push rektide/aquatic_ws:latest
 
-websocat: websocat-cargo websocat-docker-copy
+websocat: websocat-cargo websocat-docker-copy websocat-docker
 
 websocat-cargo:
 	cd websocat && cargo build
@@ -30,6 +30,12 @@ websocat-docker-copy:
 	mkdir -p docker-websocat
 	rsync -av websocat/target/debug/websocat websocat/LICENSE websocat/*.md websocat/Cargo* docker-websocat
 	rsync -av websocat/src docker-websocat/src
+
+websocat-docker:
+	cd docker-websocat && docker build -t rektide/websocat .
+
+websocat-docker-push:
+	docker push rektide/websocat
 
 all: aquatic websocat
 
