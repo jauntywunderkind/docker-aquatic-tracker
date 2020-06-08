@@ -24,7 +24,7 @@ aquatic-docker-push:
 websocat: websocat-cargo websocat-docker-copy websocat-docker
 
 websocat-cargo:
-	cd websocat && cargo build
+	cd websocat && cargo build --features=ssl
 
 websocat-docker-copy:
 	mkdir -p docker-websocat
