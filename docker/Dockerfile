@@ -10,4 +10,5 @@ RUN adduser --disabled-password --gecos "" aquatic && \
 USER aquatic
 COPY aquatic_udp aquatic_ws config_udp config_ws ./
 COPY src ./src
+COPY src-websocat ./src-websocat
 CMD ./aquatic_ws
