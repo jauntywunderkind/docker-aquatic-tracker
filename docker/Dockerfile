@@ -8,7 +8,5 @@ RUN adduser --disabled-password --gecos "" aquatic && \
 	apt-get install -y libssl1.1 && \
 	apt-get remove --purge -y
 USER aquatic
-COPY aquatic_udp aquatic_ws config_udp config_ws ./
-COPY src ./src
-COPY src-websocat ./src-websocat
+COPY * ./
 CMD ./aquatic_ws

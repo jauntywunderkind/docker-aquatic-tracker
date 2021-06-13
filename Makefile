@@ -18,8 +18,8 @@ aquatic-cargo:
 	cd aquatic && cargo build $(CARGO_BUILD_ARGS)
 
 aquatic-docker-copy:
-	mkdir -p docker/src
-	rsync -av aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src
+	mkdir -p docker/src-aquatic
+	rsync -av aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src-aquatic
 	rsync -av $(AQUATIC_BINS_TARGETS) docker
 
 aquatic-docker-config:
@@ -34,12 +34,11 @@ websocat-cargo:
 
 websocat-docker-copy:
 	mkdir -p docker-websocat/src-websocat
-	rsync -av websocat/target/debug/websocat docker/websocat
-	rsync -av websocat/LICENSE websocat/*.md websocat/Cargo* websocat/src docker/src-websocat
+	rsync -av websocat/target/$(BUILD_MODE)/websocat docker/websocat
+	rsync -av websocat/LICENSE websocat/*.md websocat/Cargo* docker/src-websocat
 
 docker:
-	cd docker && docker build -t rektide/aquatic_ws:latest -t rektide/aquatic:latest .
+	cd docker && docker build -t rektide/aquatic:latest .
 
 docker-push:
 	docker push rektide/aquatic:latest
-	docker push rektide/aquatic_ws:latest
