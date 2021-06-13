@@ -1,18 +1,24 @@
-TARGET ?= release
-BINS := aquatic aquatic_http aquatic_http_load_test aquatic_udp aquatic_udp_bench aquatic_udp_load_test aquatic_ws aquatic_ws_load_test
-BINS_TARGETS = $(addprefix aquatic/target/$(TARGET)/,$(BINS))
+BUILD_MODE ?= release
+AQUATIC_BINS := aquatic aquatic_http aquatic_http_load_test aquatic_udp aquatic_udp_bench aquatic_udp_load_test aquatic_ws aquatic_ws_load_test
+AQUATIC_BINS_TARGETS = $(addprefix aquatic/target/$(BUILD_MODE)/,$(AQUATIC_BINS))
+
+CARGO_BUILD_ARGS =
+
+ifeq (release,$(BUILD_MODE))
+CARGO_BUILD_ARGS += --release
+endif
 
 .PHONY: aquatic aquatic-cargo aquatic-docker-copy aquatic-docker-config websocat websocat-cargo websocat-docker-copy docker docker-push
 
 aquatic: aquatic-cargo aquatic-docker-copy aquatic-docker-config
 
 aquatic-cargo:
-	cd aquatic && cargo build
+	cd aquatic && cargo build $(CARGO_BUILD_ARGS)
 
 aquatic-docker-copy:
 	mkdir -p docker/src
 	rsync -av aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src
-	rsync -av $(BINS_TARGETS) docker
+	rsync -av $(AQUATIC_BINS_TARGETS) docker
 
 aquatic-docker-config:
 	cd docker && ./aquatic_ws -p > config_ws
@@ -22,7 +28,7 @@ aquatic-docker-config:
 websocat: websocat-cargo websocat-docker-copy
 
 websocat-cargo:
-	cd websocat && cargo build --features=ssl
+	cd websocat && cargo build --features=ssl $(CARGO_BUILD_ARGS)
 
 websocat-docker-copy:
 	mkdir -p docker-websocat/src-websocat
