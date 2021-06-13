@@ -1,3 +1,7 @@
+TARGET ?= release
+BINS := aquatic aquatic_http aquatic_http_load_test aquatic_udp aquatic_udp_bench aquatic_udp_load_test aquatic_ws aquatic_ws_load_test
+BINS_TARGETS = $(addprefix aquatic/target/$(TARGET)/,$(BINS))
+
 .PHONY: aquatic aquatic-cargo aquatic-docker-copy aquatic-docker-config websocat websocat-cargo websocat-docker-copy docker docker-push
 
 aquatic: aquatic-cargo aquatic-docker-copy aquatic-docker-config
@@ -7,12 +11,13 @@ aquatic-cargo:
 
 aquatic-docker-copy:
 	mkdir -p docker/src
-	rsync -av aquatic/aquatic* aquatic/plot_pareto aquatic/Cargo* aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src
-	rsync -av aquatic/target/debug/aquatic_udp aquatic/target/debug/aquatic_ws docker
+	rsync -av aquatic/LICENSE aquatic/scripts aquatic/README.md docker/src
+	rsync -av $(BINS_TARGETS) docker
 
 aquatic-docker-config:
 	cd docker && ./aquatic_ws -p > config_ws
 	cd docker && ./aquatic_udp -p > config_udp
+	cd docker && ./aquatic_http -p > config_http
 
 websocat: websocat-cargo websocat-docker-copy
 
