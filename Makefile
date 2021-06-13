@@ -10,6 +10,8 @@ endif
 
 .PHONY: aquatic aquatic-cargo aquatic-docker-copy aquatic-docker-config websocat websocat-cargo websocat-docker-copy docker docker-push
 
+all: aquatic websocat docker
+
 aquatic: aquatic-cargo aquatic-docker-copy aquatic-docker-config
 
 aquatic-cargo:
@@ -41,7 +43,3 @@ docker:
 docker-push:
 	docker push rektide/aquatic:latest
 	docker push rektide/aquatic_ws:latest
-
-
-all: aquatic websocat docker
-
