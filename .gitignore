@@ -1,4 +1,4 @@
-docker/aquatic_ws
-docker/aquatic_udp
-docker/src
+docker/aquatic*
 docker/config_*
+docker/src-*
+docker/websocat
