@@ -23,9 +23,10 @@ aquatic-docker-copy:
 	rsync -av $(AQUATIC_BINS_TARGETS) docker
 
 aquatic-docker-config:
-	cd docker && ./aquatic_ws -p > config_ws
-	cd docker && ./aquatic_udp -p > config_udp
-	cd docker && ./aquatic_http -p > config_http
+	mkdir -p docker/etc
+	cd docker && ./aquatic_ws -p > etc/ws
+	cd docker && ./aquatic_udp -p > etc/udp
+	cd docker && ./aquatic_http -p > etc/http
 
 websocat: websocat-cargo websocat-docker-copy
 

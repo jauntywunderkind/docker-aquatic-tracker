@@ -9,4 +9,4 @@ RUN adduser --disabled-password --gecos "" aquatic && \
 	apt-get remove --purge -y
 USER aquatic
 COPY * ./
-CMD ./aquatic_ws
+CMD ./aquatic_ws -c etc/ws.toml
