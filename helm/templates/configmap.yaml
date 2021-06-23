@@ -10,66 +10,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end}}
 data:
-  config_udp: |-
-    socket_workers = 1
-    request_workers = 1
-    
-    [network]
-    address = '0.0.0.0:3000'
-    socket_recv_buffer_size = 524288
-    poll_event_capacity = 4096
-    
-    [protocol]
-    max_scrape_torrents = 255
-    max_response_peers = 255
-    peer_announce_interval = 900
-    
-    [handlers]
-    max_requests_per_iter = 10000
-    channel_recv_timeout_microseconds = 200
-    
-    [statistics]
-    interval = 5
-    
-    [cleaning]
-    interval = 30
-    max_peer_age = 1200
-    max_connection_age = 300
-    
-    [privileges]
-    drop_privileges = false
-    chroot_path = '.'
-    user = 'nobody'
-  config_ws: |-
-    socket_workers = 1
-    log_level = 'debug'
-    
-    [network]
-    address = '0.0.0.0:3000'
-    ipv6_only = false
-    use_tls = false
-    tls_pkcs12_path = ''
-    tls_pkcs12_password = ''
-    poll_event_capacity = 4096
-    poll_timeout_milliseconds = 50
-    websocket_max_message_size = 65536
-    websocket_max_frame_size = 16384
-    
-    [protocol]
-    max_scrape_torrents = 255
-    max_offers = 10
-    peer_announce_interval = 120
-    
-    [handlers]
-    max_requests_per_iter = 10000
-    channel_recv_timeout_microseconds = 200
-    
-    [cleaning]
-    interval = 30
-    max_peer_age = 180
-    max_connection_age = 180
-    
-    [privileges]
-    drop_privileges = false
-    chroot_path = '.'
-    user = 'nobody'
+  udp: |-
+    {{ .Files.Get "etc/udp.toml" | nindent 4 }}
+  ws: |-
+    {{ .Files.Get "etc/ws.toml" | nindent 4 }}
+  http: |-
+    {{ .Files.Get "etc/http.toml" | nindent 4}}
