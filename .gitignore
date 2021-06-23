@@ -2,3 +2,6 @@ docker/aquatic*
 docker/config_*
 docker/src-*
 docker/websocat
+# have ripgrep & fd ignore the source files
+aquatic
+websocat
