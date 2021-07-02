@@ -34,7 +34,7 @@ spec:
             - "./aquatic_ws"
           args:
             - "-c"
-            - "etc/config_ws"
+            - "etc/ws" # our configmap's ws file
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
