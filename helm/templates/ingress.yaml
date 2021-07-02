@@ -1,41 +1,38 @@
+{{- define "hostnamesMacro" -}}
+{{- $local := dict "first" true -}}
+{{- range . -}}{{- if not $local.first -}},{{- end -}}{{- .host -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "aquatic-tracker.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
+{{- $ingress := .Values.ingress -}}
+{{- $defPathBackend := dict "service" (dict "name" $fullName "port" (dict "number" $svcPort)) -}}
+{{- $defPath := dict "path" "/" "pathType" "Prefix" "backend" $defPathBackend -}}
+{{- $hostnames := include "hostnamesMacro" $ingress.hosts -}}
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
     {{- include "aquatic-tracker.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with merge $ingress.annotations $ingress.defaultAnnotations (dict "external-dns.alpha.kubernetes.io/hostname" $hostnames) }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
+        {{- range $ingress.hosts }}
+        - {{ .host }}
         {{- end }}
-      secretName: {{ $fullName }}-cert-secret
-    {{- end }}
-  {{- end }}
+      secretName: {{ .secretName | default cat $fullName "-cert-secret" }}
   rules:
-    {{- range .Values.ingress.hosts }}
+    {{- range $ingress.hosts | default list }}
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ . }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-          {{- end }}
+        {{- range get (.http | default dict) "paths" | default (list $defPath)}}
+        - {{ toYaml (merge . $defPath) | indent 10 | trimPrefix "          " }}
+		{{- end }}
     {{- end }}
-  {{- end }}
+{{- end }}
